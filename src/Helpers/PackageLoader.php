@@ -42,7 +42,7 @@ class PackageLoader
      * @param string|null $name
      * @return array
      */
-    private function get(string $name = null): array
+    public function get(string $name = null): array
     {
         if ($name) {
             return $this->packages[$name] ?? [];
