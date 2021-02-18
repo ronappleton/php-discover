@@ -1,5 +1,5 @@
 {
-    "name": "ronappleton/php-autoloader",
+    "name": "ronappleton/php-discover",
     "description": "Add package auto discovery to any php project.",
     "keywords": [
         "auto discovery",
