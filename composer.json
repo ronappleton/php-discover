@@ -1,0 +1,31 @@
+{
+    "name": "ronappleton/php-autoloader",
+    "description": "Add package auto discovery to any php project.",
+    "keywords": [
+        "auto discovery",
+        "package",
+        "php"
+    ],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ron Appleton",
+            "email": "ron@appleton.digital"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8.0",
+        "composer/composer": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "RonAppleton\\Discover\\": "src"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "RonAppleton\\Discover\\Events\\Dump::post"
+        ]
+    }
+}
