@@ -11,11 +11,6 @@ namespace RonAppleton\Discover\Helpers;
 class PackageLoader
 {
     /**
-     * @var PackageLoader
-     */
-    protected static PackageLoader $instance;
-
-    /**
      * @var array
      */
     protected array $packages;
@@ -54,29 +49,5 @@ class PackageLoader
         }
 
         return $this->packages ?? [];
-    }
-
-    /**
-     * @param $name
-     * @param $arguments
-     * @return array
-     */
-    public function __call(string $name, array $arguments): array
-    {
-        return $this->get($arguments[0] ?? null);
-    }
-
-    /**
-     * @param string $name
-     * @param array $arguments
-     * @return array
-     */
-    public static function __callStatic(string $name, array $arguments): array
-    {
-        if (!isset(static::$instance)) {
-            static::$instance = new self;
-        }
-
-        return static::$instance->get($arguments[0] ?? null);
     }
 }
