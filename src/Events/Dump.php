@@ -16,31 +16,21 @@ use RonAppleton\Discover\Helpers\Manager;
 class Dump
 {
     /**
-     * Our package manager.
-     *
-     * @var Manager
-     */
-    private Manager $manager;
-
-    /**
      * @var array
      */
-    protected array $discoverPaths = [
+    protected static array $discoverPaths = [
         'discover',
     ];
-
-    public function __construct()
-    {
-        $this->manager = new Manager($this->discoverPaths);
-    }
 
     /**
      * @param Event $event
      * @throws JsonException
      */
-    public function post(Event $event): void
+    public static function post(Event $event): void
     {
         $vendorDirectory = (string) $event->getComposer()->getConfig()->get('vendor-dir');
-        $this->manager->discover($vendorDirectory);
+
+        $manager = new Manager(self::$discoverPaths);
+        $manager->discover($vendorDirectory);
     }
 }
