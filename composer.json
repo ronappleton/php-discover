@@ -16,7 +16,8 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
-        "composer/composer": "^2.0"
+        "composer/composer": "^2.0",
+        "ext-json": "*"
     },
     "autoload": {
         "psr-4": {
@@ -27,5 +28,9 @@
         "post-autoload-dump": [
             "RonAppleton\\Discover\\Events\\Dump::post"
         ]
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.6",
+        "vimeo/psalm": "^4.10"
     }
 }
