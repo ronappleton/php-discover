@@ -35,7 +35,7 @@ class Manager
     /**
      * @return array
      */
-    private function cacheGet(): array
+    public function cacheGet(): array
     {
         if (file_exists($this->cacheFilePath)) {
             return (array) require($this->cacheFilePath);
@@ -51,10 +51,7 @@ class Manager
      */
     protected function store(array $dataToCache): void
     {
-        file_put_contents(
-            __DIR__ . '/../cache/packages.php',
-            '<?php return ' . var_export($dataToCache, true) . ';'
-        );
+        file_put_contents($this->cacheFilePath, '<?php return ' . var_export($dataToCache, true) . ';');
     }
 
     /**
@@ -91,7 +88,7 @@ class Manager
     private function getInstalledPackages(string $vendorDirectory): ?array
     {
         if (file_exists($path = $vendorDirectory . '/composer/installed.json')) {
-            return (array) json_decode(file_get_contents($path), true, 5, JSON_THROW_ON_ERROR);
+            return (array) json_decode(file_get_contents($path), true, 512, JSON_THROW_ON_ERROR);
         }
 
         return null;
