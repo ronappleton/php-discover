@@ -5,68 +5,42 @@ declare(strict_types=1);
 namespace RonAppleton\Discover\Events;
 
 use Composer\Script\Event;
+use JsonException;
+use RonAppleton\Discover\Helpers\Manager;
 
 /**
  * Class Dump
+ *
  * @package RonAppleton\Autoload\Events
  */
 class Dump
 {
     /**
-     * @var Event
+     * Our package manager.
+     *
+     * @var Manager
      */
-    protected static Event $event;
+    private Manager $manager;
 
     /**
-     * @var array|string[]
+     * @var array
      */
-    protected static array $discoverPaths = [
+    protected array $discoverPaths = [
         'discover',
     ];
 
+    public function __construct()
+    {
+        $this->manager = new Manager($this->discoverPaths);
+    }
+
     /**
      * @param Event $event
+     * @throws JsonException
      */
-    public static function post(Event $event)
+    public function post(Event $event): void
     {
-        static::$event = $event;
-        static::cache(static::getDiscovers());
-    }
-
-    /**
-     * Store our discovered package details.
-     *
-     * @param array $dataToCache
-     */
-    protected static function cache(array $dataToCache)
-    {
-        file_put_contents(__DIR__ . '/../cache/packages.php', '<?php return ' . var_export($dataToCache, true) . ';');
-    }
-
-    /**
-     * @return array
-     */
-    protected static function getDiscovers(): array
-    {
-        $discovered = [];
-
-        $vendorDir = static::$event->getComposer()->getConfig()->get('vendor-dir');
-
-        if (file_exists($path = $vendorDir . '/composer/installed.json')) {
-            $installedPackages = json_decode(file_get_contents($path), true);
-        }
-
-        if (isset($installedPackages['packages'])) {
-            foreach ($installedPackages['packages'] as $package) {
-                foreach (static::$discoverPaths as $path) {
-                    if (isset($package['extra'][$path])) {
-                        echo "Discovered Package: " . $package['name'] . PHP_EOL;
-                        $discovered[$package['name']] = $package['extra'][$path];
-                    }
-                }
-            }
-        }
-
-        return $discovered;
+        $vendorDirectory = (string) $event->getComposer()->getConfig()->get('vendor-dir');
+        $this->manager->discover($vendorDirectory);
     }
 }
