@@ -30,7 +30,7 @@ class Dump
     {
         $vendorDirectory = (string) $event->getComposer()->getConfig()->get('vendor-dir');
 
-        $manager = new Manager(self::$discoverPaths);
+        $manager = new Manager(static::$discoverPaths);
         $manager->discover($vendorDirectory);
     }
 }
